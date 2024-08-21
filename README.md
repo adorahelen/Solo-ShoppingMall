@@ -5,4 +5,5 @@
 
 
 ## REST API 
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/5502bdde-a36e-4ed3-9a8d-fbdea00cbb8f">
 
