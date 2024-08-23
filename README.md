@@ -11,3 +11,9 @@
 ## REST API 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/5502bdde-a36e-4ed3-9a8d-fbdea00cbb8f">
 
+- 기존 브라우저는 단순한 뷰어 역할만을 수행, 반면 Web 2.0부터 프로그램이 실행되는 하나의 플랫폼으로 자리잡음
+    * 반응형 웹은 CSS 기법, 모바일 앱 등은 데이터만을 요구 => 컴퓨터 일편적인 HTML View ( X )
+    * Android app, IOS app, Browser, Applications, etc 등에게 동일한 데이터를 보내는게 API서버
+- 서버에서 완성본을 보내주는 방식에서 -> 순수한 데이터를 보내주는 방식으로 변화 (배달음식->밀키트)
+- REST 방식 혹은 Restfull 은 Http/Htpps를 이용해서 원하는 데이터를 제공하는 방식에 사용하는 구조 의미
+    * 이 REST는 정해진 스펙이 존재하지 않음, 단지 조건이나 가이드만 존재  
