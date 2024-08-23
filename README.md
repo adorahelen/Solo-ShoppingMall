@@ -17,3 +17,10 @@
 - 서버에서 완성본을 보내주는 방식에서 -> 순수한 데이터를 보내주는 방식으로 변화 (배달음식->밀키트)
 - REST 방식 혹은 Restfull 은 Http/Htpps를 이용해서 원하는 데이터를 제공하는 방식에 사용하는 구조 의미
     * 이 REST는 정해진 스펙이 존재하지 않음, 단지 조건이나 가이드만 존재  
+
+## 쿼리스트링 (Query String) 
+- @RequestParam(?로 시작하는 쿼리스트링) vs @PathVariable(고정된 주소)
+- https://github.com/adorahelen?tab=overview&from=2024-08-01&to=2024-08-23 
+- https://career.programmers.co.kr/competitions (고유한 식별자 사용) 
+- 페이지 번호와 같이, 오늘 1페이지의 내용이 시간이 지나면 변경될 수 있기에, 식별자X -> 쿼리스트링O
+    * 매번 동일한 데이터를 나타내지 않는다면 쿼리스트링으로 처리된다. 
