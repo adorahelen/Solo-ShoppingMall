@@ -12,6 +12,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface TodoRepository extends JpaRepository<Todo, Long>, TodoSearch {
+    // extends <>, "TodoSearch"는 querydsl 로 정의한 메소드
+
+    // 아래에 있는 내용들은 @Query
     @Query("SELECT t FROM Todo t WHERE t.mno = :mno")
     Optional<TodoDTO> getTodoDTO(@Param("mno") Long mno);
 
