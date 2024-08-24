@@ -35,4 +35,15 @@
 - 스프링 부트는 'Hibernate'를 선택
 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/d3fc18cd-915a-444f-869b-86113109233b">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/a522d351-4fad-4622-9e9f-be310075363e">
 
+- Hibernate를 이용하는 경우 엔티티 객체를 관리하는 여러 API,트랜잭션,예외처리 등에 신경을 써야한다.
+    * 엔티티 매니저(엔티티 객체(영속상태-준영속상태-비영속상태))
+    * 엔티티의 상태를 직접 관리하고, 필요한 시점에 커밋을 해야 하는 등, 개발자가 신경 써야 할 필요한 부분이 많다.
+- Spring Data를 사용해서 더 간단한 방식으로 개발 할 수 있다. 
+    * 개발자가 직접 코드를 작성하지 않아도 CRUD, 페이징 처리 등을 지원함
+    * SpringData는 비즈니스 로직에 더 집중할 수 있게 데이터베이스 사용 기능을 클래스 레벨에서 추상화
+    * 스프링 데이터에서 제공하는 인터페이스를 통해(리포지토리라는 이름을 가지는 인터페이스), 스프링 데이터를 사용
+    * 표준 스펙인 JPA는 스프링에서 구현한"Spring Data JPA"사용 (if몽고디비는springDataMongoDB사용)
+- Spring Data JPA란?
+- 스프링 데이터의 공통적인 기능에서 JPA의 유용한 기술이 추가된 기술
