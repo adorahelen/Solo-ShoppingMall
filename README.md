@@ -72,5 +72,14 @@
     * 개발자가 직접 수정하지 않는 파일(빌드), Q로 시작하는 클래스를 Q도메인 클래스라고 한다.
     * Q 도메인 클래스들은 동적으로 JPQL을 만들기 위해서 사용된다. 
 
-## 예외처리 
-- NoSuchElement Exception : 컨틀로러에서는 어디가 문제인지 모름, 서비스 단에서 테스트, -> EntitiyNotFound 
+## 예외처리, AOP 
+- AOP : 공통 관심사, 공통적이고 반복적인 문제에 대한 코드를 기존 코드와 결합(weaving)해서 사용
+    * Advice - 공통적인 문제를 처리하는 객체
+    * @ExceptionHandler 메서드 : ResponseEntity를 통해 사용자에게 에러 메시지와 상태 코드를 반환
+- NoSuchElement Exception : Controller에서 바라보면 어디가 문제인지 찾을 수 없음
+    * if 엔티티가 없어서 발생, 다음과 같이 처리 .orElseThrow(()->new EntityNotFoundException)
+    * 서비스 단에서, 테스트를 진행하고 위와같이 예외처리를 하나하나 지정해줘야 함 (다른 문제면, 다른 예외로)
+- MethodArgumentNotValidException : 검증에 실패한 경우 발생 
+- EntityNotFoundException : 엔티티를 찾을 수 없음
+- MethodArgumentTypeMismatchException : 설정값과 맞지 않는 URL
+- NoResourceFoundException : 뷰 파일을 찾을 수 없음 
