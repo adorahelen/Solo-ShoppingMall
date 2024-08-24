@@ -42,6 +42,9 @@ public class TodoController {
     public ResponseEntity<Page<TodoDTO>> readAll(PageRequestDTO pageRequestDTO) {
         log.info("ReadAll () --====" + pageRequestDTO);
         return ResponseEntity.ok(todoService.getList(pageRequestDTO));
+
+        // http://localhost:8080/api/v1/todo
+        // http://localhost:8080/api/v1/todo?page=2&size=30
     }
 
     @PutMapping("/{mno}") // TodoDTO 안에 mno 정보가 들어있어서, @PathVariable 안씀
