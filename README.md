@@ -31,3 +31,8 @@
 - 영속성 관리 : 객체지향 구조를 관계형 데이터베이스에 매핑해서 관리하는 방식을 의미
 - 정리 : ORM(Object-Relation-Mapping), 하나의 객체가 하나의 레코드가 되도록 관리하는데 이를 '매핑'이라 한다.
 - 결론 : ORM은 하나의 페러다임, 각 프로그래밍 언어들은 각자 스펙을 결정, JPA는 JAVA에서 택한 ORM 스펙을 의미.
+- JPA가 스펙이라면, JPA에 맞게 구현한 다양한 제품이나 라이브러리가 존재한다.
+- 스프링 부트는 'Hibernate'를 선택
+
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/d3fc18cd-915a-444f-869b-86113109233b">
+
