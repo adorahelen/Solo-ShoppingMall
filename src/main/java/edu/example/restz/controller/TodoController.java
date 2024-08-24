@@ -25,10 +25,10 @@ public class TodoController {
 //@RequestBody : 파라미터로 전달되는 데이터를 객체형을 변환하기 위해서
     //         * JSON 으로 전달되는 데이터를, 특정한 DTO로 변환시 (해당 변수 앞에 적용)
 
+    // @Validated : 검증 처리를 위한 어노테이션
 
     @PostMapping("")
-    public ResponseEntity<TodoDTO> register(
-            @Validated @RequestBody TodoDTO todoDTO) {
+    public ResponseEntity<TodoDTO> register(@Validated @RequestBody TodoDTO todoDTO) {
         log.info("Register () --====" + todoDTO); // 로그로 출력
         return ResponseEntity.ok(todoService.register(todoDTO));
     }
