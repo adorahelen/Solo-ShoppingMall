@@ -61,4 +61,10 @@
 - @Query : 특정한 속성(칼럼)들만을 조회, where 조건절의 사용
     * 쿼리 메서드 : 메서드의 이름 자체가 쿼리가 되는 기능 (findBy + where = findByTitleLike)
 - Querydsl : @Query를 이용해서 기존의 SQl 기능들을 어느 정도 사용할 수 있지만, 이미 고정된 것들이기에
-    * 상황에 따라 다른 JPQL을 만들어내기 위해서 사용한다. (JQQQ || Querydsl) 
+    * 상황에 따라 다른 JPQL을 만들어내기 위해서 사용한다. (JQQQ || Querydsl)
+      
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/0f41c358-a85a-422e-834c-4a809215f34e">
+
+- 필요한 라이브러리들을 추가하면, build폴더 내부에 Q로 시작하는 파일이 생성된다. (QTodo)
+    * 개발자가 직접 수정하지 않는 파일(빌드), Q로 시작하는 클래스를 Q도메인 클래스라고 한다.
+    * Q 도메인 클래스들은 동적으로 JPQL을 만들기 위해서 사용된다. 
