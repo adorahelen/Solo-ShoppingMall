@@ -216,6 +216,18 @@ public class TodoRepositoryTests {
         assertEquals(10, todoPage.getSize());
 
     }
+    @Test
+    public void testGetTodoDTO() {
+        Long mno = 2L;
+        Optional<TodoDTO> foundTodoDTO
+                = todoRepository.getTodoDTO(mno);
+
+        assertNotNull(foundTodoDTO);
+        assertEquals("Changer", foundTodoDTO.get().getWriter());
+
+        foundTodoDTO.ifPresent(System.out::println);
+    }
+
 //    3.  * Querydsl / JQQQ 라이브러리
     // 아래  Search 메소드들은  repository>search 디렉토리에 정의해 놓았다 .
     @Test // 쿼리 디에스엘 테스트
@@ -229,18 +241,6 @@ public class TodoRepositoryTests {
         assertEquals(9, todoPage.getNumber());
         assertEquals(10, todoPage.getSize());
         assertEquals(10, todoPage.getContent().size());
-    }
-
-    @Test
-    public void testGetTodoDTO() {
-        Long mno = 2L;
-        Optional<TodoDTO> foundTodoDTO
-                = todoRepository.getTodoDTO(mno);
-
-        assertNotNull(foundTodoDTO);
-        assertEquals("Changer", foundTodoDTO.get().getWriter());
-
-        foundTodoDTO.ifPresent(System.out::println);
     }
 
     @Test // 결과만 투두디티오로 나오도록 바꿈

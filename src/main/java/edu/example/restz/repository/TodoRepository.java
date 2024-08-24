@@ -16,8 +16,8 @@ public interface TodoRepository extends JpaRepository<Todo, Long>, TodoSearch {
 
     // 아래에 있는 내용들은 @Query
     @Query("SELECT t FROM Todo t WHERE t.mno = :mno")
-    Optional<TodoDTO> getTodoDTO(@Param("mno") Long mno);
+    Optional<TodoDTO> getTodoDTO(@Param("mno") Long mno); // 엔티티 복사본을 받아서 돌림
 
-    @Query("SELECT t FROM Todo t ORDER BY t.mno DESC") // 'mno'
+    @Query("SELECT t FROM Todo t ORDER BY t.mno DESC") // 'mno' // 엔티티를 받아서 돌림
     Page<Todo> ListAll(Pageable pageable);
 }
