@@ -57,4 +57,8 @@
 - 페이징 방식
     * findAll() : 모든 데이터를 조회, 메서드의 파라미터로 Pageable 타입 지정 가능-> 자동 페이징 처리
     * @Query : JPQL이라는 쿼리언어로 작성, SQl과 유사한 형식, 어떠한 DB든 동일하게 동작(종속 X)
-    * Querydsl / JQQQ 라이브러리 
+    * Querydsl / JQQQ 라이브러리
+- @Query : 특정한 속성(칼럼)들만을 조회, where 조건절의 사용
+    * 쿼리 메서드 : 메서드의 이름 자체가 쿼리가 되는 기능 (findBy + where = findByTitleLike)
+- Querydsl : @Query를 이용해서 기존의 SQl 기능들을 어느 정도 사용할 수 있지만, 이미 고정된 것들이기에
+    * 상황에 따라 다른 JPQL을 만들어내기 위해서 사용한다. (JQQQ || Querydsl) 
