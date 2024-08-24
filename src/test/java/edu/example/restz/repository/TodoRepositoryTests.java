@@ -22,8 +22,10 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+// @SpringBootTest 는 프로젝트 전체 실행, @DataJpaTest는 엔티티 같이 DB관련 부분만 실행
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
+// 메서드 단위로 트랜잭션이 처리되지 않도록 해 두었음, 아래에 @Transaction 으로 ..
 @Log4j2
 public class TodoRepositoryTests {
     @Autowired
@@ -109,14 +111,19 @@ public class TodoRepositoryTests {
 
         // given
         Long mno = 1L;
-        Optional<Todo> foundTodo = todoRepository.findById(mno);
+        Optional<Todo> foundTodo
+                = todoRepository.findById(mno);
         assertNotNull(foundTodo);
         assertEquals(mno, foundTodo.get().getMno());
 
-        foundTodo = todoRepository.findById(mno);
+        foundTodo
+                = todoRepository.findById(mno);
         assertNotNull(foundTodo);
         assertEquals(mno, foundTodo.get().getMno());
+        // 동일 한 .findById(mno)를 통해 호출하였지만, 트랜잭션을 통해 JPA 영속 컨텍스트가 유지되어
+        // 윗 단에서 셀렉트 한 결과로 보관되고 있는 엔티티 객체를 그대로 사용 (보관= 1차 캐시)
 
+        // 비슷한 논리로, update&delete 실행시 변경감지(더티체킹)를 통해 영속 컨텍스트를 디비에 반영함
     }
 
     @Test // Update test -Transaction NO
@@ -129,6 +136,7 @@ public class TodoRepositoryTests {
         Optional<Todo> foundTodo = todoRepository.findById(mno);
         foundTodo.get().changeTitle("Title changed");
         foundTodo.get().changeWriter("Changer");
+        // 엔티티 클래스에 만들어 놓은 체인지 메소드를 통해 데이터의 영속성을 변경한다.
 
         assertEquals("Title changed", foundTodo.get().getTitle());
         assertEquals("Changer", foundTodo.get().getWriter());
@@ -149,14 +157,14 @@ public class TodoRepositoryTests {
         Long mno = 2L;
         Optional<Todo> foundTodo = todoRepository.findById(mno);
         foundTodo.get().changeTitle("Title changed");
-        foundTodo.get().changeWriter("Changer");
+        foundTodo.get().changeWriter("CHANGERS");
 
         assertEquals("Title changed", foundTodo.get().getTitle());
-        assertEquals("Changer", foundTodo.get().getWriter());
+        assertEquals("CHANGERS", foundTodo.get().getWriter());
 
         foundTodo = todoRepository.findById(mno);
         assertEquals("Title changed", foundTodo.get().getTitle());
-        assertEquals("Changer", foundTodo.get().getWriter());
+        assertEquals("CHANGERS", foundTodo.get().getWriter());
 
     }
 
@@ -171,13 +179,13 @@ public class TodoRepositoryTests {
         assertTrue( foundTodo.isEmpty());
 
     }
+// ======여기까지는 CRUD 및 트랜잭션 테스트, 아래는 페이징 =======
 
+    //   1.  * findAll() : 모든 데이터를 조회, 메서드의 파라미터로 Pageable 타입 지정 가능-> 자동 페이징 처리
     @Test // 페이징 테스트 (카운트 & 진짜 페이지 )
     public void testFindAll() {
-        Pageable pageable = PageRequest
-                .of(0, 10, Sort
-                        .by("mno")
-                        .descending());
+        Pageable pageable
+                = PageRequest.of(0, 10, Sort.by("mno").descending());
         // 페이지 번호, 한 페이지 게시물, 게시물 정렬 기준
 
         Page<Todo> todoPage = todoRepository.findAll(pageable);
@@ -191,12 +199,13 @@ public class TodoRepositoryTests {
         todoPage.getContent().forEach(System.out::println);
     }
 
-
+//    2. * @Query : JPQL이라는 쿼리언어로 작성, SQl과 유사한 형식, 어떠한 DB든 동일하게 동작(종속 X)
+// testListAll 은 repository>TodoRepository interface에 정의되어 있다.
     @Test // 쿼리 테스트
     public void testListAll(){
 
-        Pageable pageable = PageRequest.of(0, 10
-        ,Sort.by("mno").descending());
+        Pageable pageable
+                = PageRequest.of(0, 10, Sort.by("mno").descending());
 
         Page<Todo> todoPage = todoRepository.ListAll(pageable);
 
@@ -207,7 +216,8 @@ public class TodoRepositoryTests {
         assertEquals(10, todoPage.getSize());
 
     }
-
+//    3.  * Querydsl / JQQQ 라이브러리
+    // 아래  Search 메소드들은  repository>search 디렉토리에 정의해 놓았다 .
     @Test // 쿼리 디에스엘 테스트
     public void testSearch(){
         Pageable pageable = PageRequest.of(9, 10, Sort.by("mno").descending());
