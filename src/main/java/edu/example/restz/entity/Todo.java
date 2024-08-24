@@ -27,6 +27,7 @@ public class Todo {
     private LocalDate dueDate;
 
     // setter
+    // 영속 상태의 데이터를 변경하기 위해, 엔티티 클래스에 Change 메소드들을 추가한다.
     public void changeTitle(String title) {
         this.title = title;
     }
