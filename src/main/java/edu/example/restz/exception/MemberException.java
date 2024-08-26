@@ -6,6 +6,8 @@ public enum MemberException {
     NOT_FOUND("NOT_FOUND", 404),
     DUPLICATE("DUPLICATE", 409),
     INVALID("INVALID", 400),
+
+    // 위에는 API 에러(회원정보), 아래는 토큰에 대한 에러 "잘못된 인증정보 ) "
     BAD_CREDENTIALS("BAD_CREDENTIALS", 401);
 
     private MemberTaskException memberTaskException;

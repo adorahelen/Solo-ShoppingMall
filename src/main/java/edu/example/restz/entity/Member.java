@@ -19,6 +19,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name="tbl_member")
 @EntityListeners(value = { AuditingEntityListener.class })
+// 프로젝트 내에서 시큐리티 대상이 되는 사용자들의 정보
+// - 등록 시간과 수정 시간 : JPA 의 엔티티 객체가 저장돠거나 수정될 경우 이에 대한 시간이 자동으로 기록된다.,
+// - 사용자 등급 : 사용자가 일반 회원인지, 관리자인지 알 수 있도록 한다. ( ROLE)
+
 public class Member {       //엔티티 객체 insert/update 시 자동으로 시간 갱신
     @Id
     private String mid;
