@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
 
+// http://localhost:8080/swagger-ui/index.html
+// http://localhost:8080/v3/api-docs
+// http://localhost:8080/v3/api-docs.yaml
 @OpenAPIDefinition(
         info=@Info (
         title = "REST API",
