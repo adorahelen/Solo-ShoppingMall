@@ -3,6 +3,9 @@ package edu.example.restz.controller;
 import edu.example.restz.dto.PageRequestDTO;
 import edu.example.restz.dto.TodoDTO;
 import edu.example.restz.service.TodoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -17,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/todo") // 특정한 URI 반응 또는 공통적인 경로 처리
 @Log4j2
+@Tag(name = "Todo Controller", description = "오늘 할 일 컨트롤러")
 public class TodoController {
     private final TodoService todoService;
 
@@ -33,8 +37,13 @@ public class TodoController {
         return ResponseEntity.ok(todoService.register(todoDTO));
     }
 
+    // 2. 메서드 설명
+    @Operation(summary = "해야 할 일 조회 (하나)", description = "번호를 통해 조회합니다")
     @GetMapping("/{mno}")
-    public ResponseEntity<TodoDTO> read(@PathVariable Long mno) {
+    public ResponseEntity<TodoDTO> read(
+            // 3. 파라미터 설명
+            @Parameter(description = "조회할 번호를 입력하세요.")
+            @PathVariable Long mno) {
         return ResponseEntity.ok(todoService.read(mno));
     }
 

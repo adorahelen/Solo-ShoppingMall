@@ -1,5 +1,6 @@
 package edu.example.restz.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -14,12 +15,18 @@ import org.springframework.data.domain.Sort;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// 1, PageRequestDTO 설명
+@Schema(description = "오늘의 할 일 목록 조회 시 페이징 정보 지정")
 public class PageRequestDTO {
-    // 페이지 번호 -
+
+    // 2. 필드 설명
+    @Schema(description = "표시할 페이지 번호")
     @Builder.Default
     @Min(1)
     private int page = 1; // page number - first page started 0
 
+    // 3. 필드 설명
+    @Schema(description = "한 페이지에 표시할 게시물의 수")
     @Builder.Default
     @Min(10)
     @Max(100)
