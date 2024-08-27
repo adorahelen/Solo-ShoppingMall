@@ -29,7 +29,7 @@ public class TokenController {
 
         // 토큰을 생성하자
         Map<String, Object> payloadMap = foundMemberDTO.getPayload();
-        String accessToken = jwtUtil.createToken(payloadMap, 10); // 10분 유효한 접근 토큰
+        String accessToken = jwtUtil.createToken(payloadMap, 2); // 10분 유효한 접근 토큰
         String refreshToken = jwtUtil.createToken(Map.of("mid", foundMemberDTO.getMid())
                 , 60*24*7); // 7일 유효한 리프레쉬 토큰
 
