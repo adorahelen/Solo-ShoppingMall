@@ -85,4 +85,5 @@
 - NoResourceFoundException : 뷰 파일을 찾을 수 없음
 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/5d7a2a49-dd74-4772-95dc-aceba2f1b99f">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/1ff2827b-2826-464a-aa6e-23ac6aac28b9">
 
