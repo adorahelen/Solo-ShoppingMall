@@ -82,4 +82,15 @@
 - MethodArgumentNotValidException : 검증에 실패한 경우 발생 
 - EntityNotFoundException : 엔티티를 찾을 수 없음
 - MethodArgumentTypeMismatchException : 설정값과 맞지 않는 URL
-- NoResourceFoundException : 뷰 파일을 찾을 수 없음 
+- NoResourceFoundException : 뷰 파일을 찾을 수 없음
+
+## 스웨거(API_DOCS)
+- 의존성 추가 implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+- @OpenAPIDefinition : info=@Info (title = "REST API",version = "ver 0.1",description = "RESTful API Documentation")
+    * servers = { @Server(description = "Prod ENV", url = "http://localhost:8080/")
+  
+
+
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/5d7a2a49-dd74-4772-95dc-aceba2f1b99f">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/1ff2827b-2826-464a-aa6e-23ac6aac28b9">
+
