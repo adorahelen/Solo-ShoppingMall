@@ -54,7 +54,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String headerAuth = request.getHeader("Authorization");  // 요청 헤더에서 Authorization 정보를 가져옴
         log.info("--- headerAuth : " + headerAuth);
 
-        // Authorization 헤더가 없거나 "Bearer "로 시작하지 않으면 예외 처리
+        // Authorization 헤더가 없거나 "Bearer "로 시작하지 않으면 403 예외 처리
         if(headerAuth == null || !headerAuth.startsWith("Bearer ")) {
             handleException(response, new Exception("ACCESS TOKEN NOT FOUND"));
             return;
@@ -68,7 +68,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             Map<String, Object> claims = jwtUtil.validateToken(accessToken);
             log.info("--- 토큰 유효성 검증 완료 ---");
 
-            // SecurityContextHolder에 인증 정보를 설정
+            // SecurityContextHolder에 인증 정보를 설정 (원래 통과하면 여기에 저장한 다음 추후 비교함, 책에 있음!)
             String mid = claims.get("mid").toString();  // 클레임에서 사용자 ID 추출
             String[] roles = claims.get("role").toString().split(",");  // 클레임에서 역할(Role) 정보를 추출
 
