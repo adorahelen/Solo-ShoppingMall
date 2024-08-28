@@ -21,7 +21,7 @@ public class SampleController {
 
     private final SampleService sampleService;
 
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     // @PreAuthorize 해즈롤이 자동으로 붙는다?
     @GetMapping("/list")
     public ResponseEntity<?> list(){
@@ -36,9 +36,11 @@ public class SampleController {
         return "Hello World!~";
         //http://localhost:8080/api/v1/sample/hello
     }
+
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/hellos")
     public String[] hellos() {
-        return new String[]{"Hello World!~" , "Hello World!~"};
+        return new String[]{"Hello" , "HI"};
 
     }
 
