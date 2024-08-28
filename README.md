@@ -90,7 +90,27 @@
     * servers = { @Server(description = "Prod ENV", url = "http://localhost:8080/")
   
 
+## 토큰발급(http://localhost:8080/api/v1/token/make)
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/561fa055-719d-4fa0-b9aa-fe5572725db4">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/42cbaae8-73fc-40fb-8fd2-4bc33d46232c">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/34ad7717-45f3-4633-9647-0c6c1175ca45">
+
+
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/41541bd8-7521-42d8-8b8f-dd26fdd57ed4">
+
+## 비동기처리(AJAX)
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/1ff2827b-2826-464a-aa6e-23ac6aac28b9">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/5fc8ccd4-0b4f-429d-8300-80a044e9e44e">
+
+
+## CORS 처리 
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/956b91bb-e87d-4f05-9314-d9d393768f9e">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/03de5618-497e-4534-b638-c11bb08a3bf9">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/6be00ead-5319-47f6-a59f-593f4f039f9d">
+
+
+
+
+## 파일업로드
 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/5d7a2a49-dd74-4772-95dc-aceba2f1b99f">
-<img width="700" alt="image" src="https://github.com/user-attachments/assets/1ff2827b-2826-464a-aa6e-23ac6aac28b9">
-
