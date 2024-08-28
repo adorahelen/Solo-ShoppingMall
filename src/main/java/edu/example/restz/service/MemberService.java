@@ -35,4 +35,12 @@ public class MemberService {
 
     }
 
+    public MemberDTO read (String mid) {
+        Optional<Member> result = memberRepository.findById(mid);
+
+        // 데이터베이스에 존재하지 않는 경우 - MemberE 에 예외처리 발생
+        Member member = result.orElseThrow(MemberException.BAD_CREDENTIALS::get);
+
+        return new MemberDTO(member);
+    }
 }
