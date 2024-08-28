@@ -90,7 +90,11 @@
     * servers = { @Server(description = "Prod ENV", url = "http://localhost:8080/")
   
 
+## 토큰발급(http://localhost:8080/api/v1/token/make)
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/41541bd8-7521-42d8-8b8f-dd26fdd57ed4">
 
-<img width="700" alt="image" src="https://github.com/user-attachments/assets/5d7a2a49-dd74-4772-95dc-aceba2f1b99f">
+## 비동기처리(AJAX)&CORS처리
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/1ff2827b-2826-464a-aa6e-23ac6aac28b9">
 
+##파일업로드
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/5d7a2a49-dd74-4772-95dc-aceba2f1b99f">
