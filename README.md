@@ -82,4 +82,7 @@
 - MethodArgumentNotValidException : 검증에 실패한 경우 발생 
 - EntityNotFoundException : 엔티티를 찾을 수 없음
 - MethodArgumentTypeMismatchException : 설정값과 맞지 않는 URL
-- NoResourceFoundException : 뷰 파일을 찾을 수 없음 
+- NoResourceFoundException : 뷰 파일을 찾을 수 없음
+
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/5d7a2a49-dd74-4772-95dc-aceba2f1b99f">
+
