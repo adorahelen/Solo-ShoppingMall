@@ -20,6 +20,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // 토큰 컨트롤러 32번 라인에서 딱 한번 사용 1. 메소드 : makeToken
     public MemberDTO read (String mid, String mpw) {
         Optional<Member> result = memberRepository.findById(mid);
 
@@ -34,7 +35,7 @@ public class MemberService {
         return new MemberDTO(member);
 
     }
-
+//  토큰 컨트롤러 115, 173 번째 줄 = make"new"Token / refreshVerify
     public MemberDTO read (String mid) {
         Optional<Member> result = memberRepository.findById(mid);
 
