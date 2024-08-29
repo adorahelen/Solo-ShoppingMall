@@ -2,9 +2,9 @@ package edu.example.restz.util;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -54,6 +54,12 @@ public class UploadUtil {// 실제 업로드 수행
             try {
                 file.transferTo(new File(savePath + saveFilename)); //--- 실제 파일 업로드 처리 부분---
                 // 5. 업로드된 파일명을 List 객체에 저장한다.
+
+                // 5-2 썸네일 파일 생성
+                Thumbnails.of(new File(savePath + saveFilename))
+                        .size(150, 150)
+                                .toFile(savePath + "s_" + saveFilename);
+
                 filenames.add(saveFilename);
             } catch (IOException e) {
                 throw new RuntimeException(e);
