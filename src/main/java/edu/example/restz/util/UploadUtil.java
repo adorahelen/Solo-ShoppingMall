@@ -70,6 +70,21 @@ public class UploadUtil {// 실제 업로드 수행
     }
     // 6. 파일 컨트롤러에서, 전달받은 값을 상태 코드 200으로 반환
     // 업로드 파일 삭제
+    public void deleteFile(String filename) { // 1. 컨트롤러에서 삭제할 파일명을 매개변수로 받는다.
+        File file = new File(uploadPath + File.separator + filename);
+        File thumbFile = new File(uploadPath + File.separator + "s_" + filename);
+
+        try {
+            if (file.exists()) {
+                file.delete();
+            }
+            if (thumbFile.exists()) {
+                thumbFile.delete();
+            }
+        }catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
 
 
 

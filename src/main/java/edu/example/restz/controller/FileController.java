@@ -5,10 +5,7 @@ import edu.example.restz.util.UploadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -20,6 +17,15 @@ import java.util.List;
 public class FileController {
 
     private final UploadUtil uploadUtil;
+
+    @DeleteMapping("/delete/{fileName}")
+    public ResponseEntity<Void> deleteFile(@PathVariable(name = "fileName") String fileName)
+    {
+        log.info("Deleting file: " + fileName);
+        uploadUtil.deleteFile(fileName);
+        log.info("파일 정상적으로 삭제 되었습니다.");
+        return ResponseEntity.noContent().build();
+    }
 
 
     @PostMapping("/upload")
