@@ -120,4 +120,5 @@
 - 파일을 디비에 통째로 올리는 경우도 있다. -> 선택하기 나름 파일 관리를 어떻게 할지 
 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/7f55027c-2c89-42b2-8b86-ae918ceb02d4">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/6cd66d6c-3580-489f-b2e1-dad289a19472">
 
