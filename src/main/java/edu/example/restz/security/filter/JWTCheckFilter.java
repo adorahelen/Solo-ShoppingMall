@@ -36,6 +36,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         if(request.getRequestURI().startsWith("/api/v1/token/")) {
             return true;  // 이 경로는 필터링하지 않음
         }
+        if(!request.getRequestURI().startsWith("/api/")) { // + /api/ 로 시작하지 않는 경로는 제외(토큰 안필요)
+            return true;  // 이 경로는 필터링하지 않음
+        }
         return false;  // 그 외의 경로는 필터링 적용
     }
 
