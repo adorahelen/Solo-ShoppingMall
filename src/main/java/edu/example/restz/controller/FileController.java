@@ -1,6 +1,7 @@
 package edu.example.restz.controller;
 
 import edu.example.restz.exception.UploadNotSupportedException;
+import edu.example.restz.util.UploadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ import java.util.List;
 @Log4j2
 @RequestMapping("/api/v1/files")
 public class FileController {
+
+    private final UploadUtil uploadUtil;
 
 
     @PostMapping("/upload")
@@ -39,7 +42,8 @@ public class FileController {
 
         }
 
-        return null;
+        List<String> fileNames = uploadUtil.upload(files);
+        return ResponseEntity.ok().body(fileNames);
     }
 
     // 업로드 파일 확장자 체크
