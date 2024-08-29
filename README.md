@@ -114,3 +114,10 @@
 ## 파일업로드
 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/5d7a2a49-dd74-4772-95dc-aceba2f1b99f">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/13632520-fa05-4613-a44a-75362244c6ca">
+
+- 파일을 서버에 업로드 하고, 파일 이름만 디비에 넣는 경우가 있고
+- 파일을 디비에 통째로 올리는 경우도 있다. -> 선택하기 나름 파일 관리를 어떻게 할지 
+
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/7f55027c-2c89-42b2-8b86-ae918ceb02d4">
+
