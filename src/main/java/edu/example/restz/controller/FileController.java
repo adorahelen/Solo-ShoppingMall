@@ -18,13 +18,15 @@ public class FileController {
 
     private final UploadUtil uploadUtil;
 
+    // Delete 요청의 경로에 파라미터값으로 삭제하려는 파일명을 전달받는다.
     @DeleteMapping("/delete/{fileName}")
     public ResponseEntity<Void> deleteFile(@PathVariable(name = "fileName") String fileName)
     {
         log.info("Deleting file: " + fileName);
-        uploadUtil.deleteFile(fileName);
+        uploadUtil.deleteFile(fileName); // uploadUtil 클래스의 해당 메서드에 전달한 후
         log.info("파일 정상적으로 삭제 되었습니다.");
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build(); // 처리된 결과는 임의로 지정
+
     }
 
 

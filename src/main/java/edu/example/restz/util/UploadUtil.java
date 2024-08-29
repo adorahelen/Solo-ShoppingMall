@@ -69,11 +69,13 @@ public class UploadUtil {// 실제 업로드 수행
         return filenames; // 5, 업로드된 파일명을 List 객체에 저장하여 반환
     }
     // 6. 파일 컨트롤러에서, 전달받은 값을 상태 코드 200으로 반환
+
     // 업로드 파일 삭제
     public void deleteFile(String filename) { // 1. 컨트롤러에서 삭제할 파일명을 매개변수로 받는다.
-        File file = new File(uploadPath + File.separator + filename);
-        File thumbFile = new File(uploadPath + File.separator + "s_" + filename);
+        File file = new File(uploadPath + File.separator + filename); // 2. 삭제할 원본
+        File thumbFile = new File(uploadPath + File.separator + "s_" + filename); // 3. 썸네일
 
+        // 4. 만약 원본 파일이 존재하면 삭제, 5. 만약 썸네일 파일이 존재하면 삭제
         try {
             if (file.exists()) {
                 file.delete();
@@ -81,7 +83,7 @@ public class UploadUtil {// 실제 업로드 수행
             if (thumbFile.exists()) {
                 thumbFile.delete();
             }
-        }catch (Exception e) {
+        }catch (Exception e) { // 6. 만약 예외처리 시 트라이&캐치, 발생한 예외 메시지를 로그와 함께 출력
             log.error(e.getMessage());
         }
     }
