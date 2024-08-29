@@ -123,3 +123,8 @@
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/6cd66d6c-3580-489f-b2e1-dad289a19472">
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/e31cc733-f425-4076-9496-a981aa78a5d2">
 
+## JPA 심화
+- @ElementCollection
+- @Collection
+- @Embedable
+- 
