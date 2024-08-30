@@ -129,4 +129,6 @@
 - @Embedable
 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/78fa43a2-59a0-47fd-bbe2-3f29d7cbc0f5">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/921786de-3235-4bb4-a64e-263207cd6e12">
+<img width="873" alt="image" src="https://github.com/user-attachments/assets/f8f623db-2bd1-46aa-9be3-ab368b09bb28">
 
