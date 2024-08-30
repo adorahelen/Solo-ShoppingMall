@@ -1,5 +1,6 @@
 package edu.example.restz.repository;
 
+import edu.example.restz.dto.ProductDTO;
 import edu.example.restz.entity.Product;
 import edu.example.restz.entity.ProductImage;
 import lombok.extern.log4j.Log4j2;
@@ -11,6 +12,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.stream.IntStream;
@@ -124,5 +126,33 @@ public class ProductRepositoryTests {
         productRepository.deleteById(pno);
 
         assertFalse(productRepository.getProduct(pno).isPresent(), "지웠는데 왜 있지?");
+    }
+
+    @Test
+    public void testReadDTO() {
+
+        // 반드시 DB에 있는 번호로
+        Long pno = 1L;
+
+        Optional<ProductDTO> result = productRepository.getProductDTO(pno);
+        assertTrue(result.isPresent(), " 문제가 발생 1 ");
+
+        List<String> images = result.get().getImages();
+        assertNotNull(images);
+        assertEquals("new2.jpg", images.get(3));
+        log.info(result);
+// 2024-08-30T16:36:02.680+09:00  INFO 2160 --- [restz] [    Test worker]
+// e.e.r.repository.ProductRepositoryTests  :
+// Optional[ProductDTO(pno=1, pname=변경 상품, price=1000,
+// description=null, registerId=null, images=[1_image1.jpg, 1_image2.jpg, new1.jpg, new2.jpg])]
+
+
+        // 2024-08-30T16:40:37.898+09:00  INFO 2199 --- [restz] [    Test worker] e.e.r.repository.
+        // ProductRepositoryTests  : Optional[ProductDTO(pno=1, pname=변경 상품, price=1000,
+        // description=상품 설명, registerId=user1, images=[1_image1.jpg, 1_image2.jpg, new1.jpg, new2.jpg])]
+
+
+//        ProductDTO productDTO = result.get();
+//        System.out.println(productDTO);
     }
 }
