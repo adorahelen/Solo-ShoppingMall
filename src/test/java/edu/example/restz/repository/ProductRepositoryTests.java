@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class ProductRepositoryTests {
                             .pname("신규상품 " + i)
                             .price(5000)
                             .description("상품 설명")
-                            .registerId("user0")
+                            .registerId("user" + i)
                             .build();
 
                     product.addImage(i + "_image1.jpg");
@@ -83,5 +84,45 @@ public class ProductRepositoryTests {
         System.out.println(productImages);
 
 
+    }
+
+    @Test
+    @Transactional
+    @Commit
+    public void testUpdate() {
+        Long pno = 1L;
+        String pname = "변경 상품";
+        int price = 1000;
+        String img1 = "new1.jpg";
+        String img2 = "new2.jpg";
+
+        Optional<Product> foundproduct = productRepository.getProduct(pno);
+        assertTrue(foundproduct.isPresent(), "상품이 존재하지 않습니다 ");
+
+        Product product = foundproduct.get(); // 찾은 번호에 맞는, 해당 객체 가져오기
+        product.changePname(pname); // 변경 시작
+        product.changePrice(price);
+        product.addImage(img1);
+        product.addImage(img2);
+
+        foundproduct = productRepository.getProduct(pno); // 해당하는 데이터 다시 가져오기
+        assertEquals(pname, foundproduct.get().getPname());
+        assertEquals(price, foundproduct.get().getPrice());
+
+        SortedSet<ProductImage> productImages = product.getImages(); // 데이터에서 프로덕트 이미지를
+        assertEquals(3, productImages.last().getIno());
+    }
+
+    @Test
+    @Transactional
+    @Commit
+    public void testDelete() {
+        Long pno = 5L;
+
+        assertTrue(productRepository.getProduct(pno).isPresent(), " 없습니다 . ");
+
+        productRepository.deleteById(pno);
+
+        assertFalse(productRepository.getProduct(pno).isPresent(), "지웠는데 왜 있지?");
     }
 }
