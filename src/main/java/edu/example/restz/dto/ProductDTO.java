@@ -48,6 +48,7 @@ public class ProductDTO {
         Product product
                 = Product.builder()
                 .pno(pno)
+                .pname(pname)
                 .price(price)
                 .description(description)
                 .registerId(registerId)
