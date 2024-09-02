@@ -1,6 +1,7 @@
 package edu.example.restz.repository;
 
 import edu.example.restz.dto.ProductDTO;
+import edu.example.restz.dto.ProductListDTO;
 import edu.example.restz.entity.Product;
 import edu.example.restz.entity.ProductImage;
 import lombok.extern.log4j.Log4j2;
@@ -8,9 +9,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +35,20 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ProductRepositoryTests {
     @Autowired
     private ProductRepository productRepository;
+
+    @Test
+    public void testList() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+        Page<ProductListDTO> productList = productRepository.list(pageable);
+        assertNotNull(productList);
+
+        productList.getContent().forEach(productListDTO -> {
+            System.out.println(productListDTO);
+        });
+
+    }
+
+
 
     @Test // 단순 삽입
     public void testInsert() {
