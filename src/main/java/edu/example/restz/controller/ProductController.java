@@ -11,12 +11,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Collection;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -70,6 +75,26 @@ public class ProductController {
 
         return ResponseEntity.ok(productService.update(productDTO));
 
+    }
+    @DeleteMapping("/{pno}")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable("pno") Long pno,
+                                                      Authentication authentication) {
+        log.info("--- delete()");
+        log.info("--- pno : " + pno);
+        log.info("--- authentication : " + authentication);
+
+
+        String mid = productService.read(pno).getRegisterId();
+        if (!authentication.getName().equals(mid)) {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+            authorities.stream().filter(authority -> authority.getAuthority().equals("ROLE_ADMIN"))
+                    .findAny().orElseThrow(ProductException.REGISTER_ERR::get);
+        }
+        // 실제 삭제 작업 수행
+        productService.remove(pno);  // delete() 메서드
+
+        return ResponseEntity.ok(Map.of("Result", "Product deleted Successfully"));
     }
 
 }

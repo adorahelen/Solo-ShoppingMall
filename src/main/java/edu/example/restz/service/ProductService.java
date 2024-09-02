@@ -47,8 +47,8 @@ public class ProductService {
         log.info(" === pno Modify ===");
         log.info("--- " + productDTO);
         Optional<Product> result = productRepository.findById(productDTO.getPno());
-
         Product product = result.orElseThrow(ProductException.NOT_REGISTERED::get);
+
         try {
             product.changePname(productDTO.getPname());
             product.changePrice(productDTO.getPrice());
@@ -69,6 +69,21 @@ public class ProductService {
             log.error("--- " + e.getMessage());
             throw ProductException.NOT_MODIFIED.get();
         } // end catch
+
+    }
+
+    public void remove(Long pno) {
+        log.info(" === pno Delete ===");
+        log.info("--- " + pno);
+        Optional<Product> result = productRepository.findById(pno);
+        Product product = result.orElseThrow(ProductException.NOT_FOUND::get);
+
+        try {
+            productRepository.delete(product);
+        }catch(Exception e) {
+            log.error("--- " + e.getMessage());
+            throw ProductException.NOT_REMOVED.get();
+        }
 
     }
 
