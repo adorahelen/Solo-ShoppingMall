@@ -96,5 +96,7 @@ public class ProductController {
 
         return ResponseEntity.ok(Map.of("Result", "Product deleted Successfully"));
     }
-
+// 지우는게 가능한 경우
+    // 1. 권한이 Admin 인 경우 -> 아무나 가능
+    // 2. 권한이 No Admin 인 경우 -> 글을 자성한 사람만 가능 (registerId == UserX(token with) )
 }
