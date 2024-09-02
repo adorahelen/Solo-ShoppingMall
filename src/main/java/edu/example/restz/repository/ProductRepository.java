@@ -2,6 +2,7 @@ package edu.example.restz.repository;
 
 import edu.example.restz.dto.ProductDTO;
 import edu.example.restz.entity.Product;
+import edu.example.restz.repository.search.ProductSearch;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductSearch {
 
 //    @EntityGraph(attributePaths = {"images"},
 //    type= EntityGraph.EntityGraphType.FETCH)
