@@ -1,6 +1,8 @@
 package edu.example.restz.controller.advice;
 
 import edu.example.restz.exception.EntityNotFoundException;
+import edu.example.restz.exception.ProductTaskException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,50 +16,43 @@ import java.util.Map;
 
 
 @RestControllerAdvice
+@Log4j2
 public class APIControllerAdvice {
-// @ExceptionHandler 메서드는 ResponseEntity를 통해 사용자에게 에러 메시지와 상태 코드를 반환
+    @ExceptionHandler(ProductTaskException.class)
+    public ResponseEntity<Map<String, String>> handleException(ProductTaskException e){
+        log.info("--- ProductTaskException");
+        log.info("--- e.getClass().getName() : " + e.getClass().getName());
+        log.info("--- e.getMessage() : " + e.getMessage());
 
+        Map<String, String> errMap = Map.of("error", e.getMessage());
+
+        return ResponseEntity.status(e.getCode()).body(errMap);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleArgsException(MethodArgumentNotValidException e) {
+    public ResponseEntity<?> handleArgsException(MethodArgumentNotValidException e){
         Map<String, Object> errMap = new HashMap<>();
-        e.getBindingResult().
-                getFieldErrors().forEach(err -> errMap.put(err.getField(),
-                                                            err.getDefaultMessage()));
-
+        e.getBindingResult()
+                .getFieldErrors().forEach( err -> errMap.put(err.getField(),
+                        err.getDefaultMessage()));
         return new ResponseEntity<>(errMap, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e) {
-//        Map<String, Object> errMap = new HashMap<>();
-//        errMap.put("error", e.getMessage());
-//        errMap.put("code", e.getCode());
-//        return new ResponseEntity<>(errMap, HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> handleArgsException(EntityNotFoundException e){
         Map<String, Object> errMap = new HashMap<>();
         errMap.put("message", e.getMessage());
-        errMap.put("code", HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(errMap, HttpStatus.NOT_FOUND);
 
+        return new ResponseEntity<>(errMap, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+    public ResponseEntity<?> handleArgsException(MethodArgumentTypeMismatchException e){
         Map<String, Object> errMap = new HashMap<>();
-        //errMap.put("message", e.getMessage()); 코드를 추가로 작성할 필요가 없는게 AOP
-        errMap.put("error", "타입이 미스입니다.");
-        errMap.put(e.getName(), e.getValue() + " is Not Valid value");
+        errMap.put("error", "Type Mismatched.");
+        errMap.put(e.getName(), e.getValue() + " is NOT VALID VALUE");
+
         return new ResponseEntity<>(errMap, HttpStatus.BAD_REQUEST);
     }
-
-    //NoResourceFoundException
-//    @ExceptionHandler(NoResourceFoundException.class)
-//    public ResponseEntity<?> handleNoResourceFoundException(NoResourceFoundException e) {
-//        Map<String, Object> errMap = new HashMap<>();
-//        errMap.put("error", "view 파일이 존재하지 않습니다. ");
-//        errMap.put("code", HttpStatus.NOT_FOUND);
-//        return new ResponseEntity<>(errMap, HttpStatus.NOT_FOUND);
-//    }
-
 }
+
