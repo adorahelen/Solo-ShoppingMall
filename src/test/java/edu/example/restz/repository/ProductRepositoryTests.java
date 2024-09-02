@@ -36,106 +36,87 @@ public class ProductRepositoryTests {
     @Autowired
     private ProductRepository productRepository;
 
-    @Test
-    public void testList() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
-        Page<ProductListDTO> productList = productRepository.list(pageable);
-        assertNotNull(productList);
-
-        productList.getContent().forEach(productListDTO -> {
-            System.out.println(productListDTO);
-        });
-
-    }
-
-
-
-    @Test // 단순 삽입
-    public void testInsert() {
-        // Given - Product entity 객체 엔티티 생성
+    @Test   //insert 테스트
+    public void testInsert(){
+        //GIVEN - Product 엔티티 객체 생성
         IntStream.rangeClosed(1, 50).forEach(i -> {
-                    Product product = Product.builder()
-                            .pname("신규상품 " + i)
-                            .price(5000)
-                            .description("상품 설명")
-                            .registerId("user" + i)
-                            .build();
+            Product product = Product.builder()
+                    .pname("신규 상품_" + i)
+                    .price(5000)
+                    .description("상품 설명")
+                    .registerId("user5")
+                    .build();
 
-                    product.addImage(i + "_image1.jpg");
-                    product.addImage(i + "_image2.jpg");
+            product.addImage(i + "_image1.jpg");
+            product.addImage(i + "_image2.jpg");
 
-                    // When - 엔티티 저장
-                    Product saveProduct = productRepository.save(product);
+            //WHEN - 엔티티 저장
+            Product savedProduct = productRepository.save(product);
 
-                    // then - 기댓값, : saveTodo 는 NULL 이 아니며, 아이디는 1이다.
-                    assertNotNull(saveProduct);
-                    assertEquals(i, saveProduct.getPno());
-                    assertEquals(0, saveProduct.getImages().first().getIno());
+            //THEN - savedProduct가 널이 아니고 mno는 1일 것
+            assertNotNull(savedProduct);
+            assertEquals(i, savedProduct.getPno());
+            assertEquals(0, savedProduct.getImages().first().getIno());
         });
     }
 
-
-    // ====== 디폴트값이 지연로딩으로 되어있다. (즉시로딩은 계속 전부 읽어 오기에, @ElementCollection(fetch = FetchType.LAZY))
-    // 따라서 아래와 같이 트랜잭션 리드 온리를 통해 2번 읽어오게 할 수 있고
-    // 아래 아래와 같이 레포인터에 메소드를 하나 정의해서 필요한 것만 즉시 로딩을 통해 조인을 통해 가져오게 할 수 있다.
     @Test
-    @Transactional(readOnly = true)
-    public void testRead() {
+    @Transactional(readOnly = true) //읽기 전용 트랜잭션 모드 설정
+    public void testRead(){
         Long pno = 1L;
 
-        Optional<Product> foundproduct = productRepository.findById(pno);
-        assertTrue(foundproduct.isPresent(), "Product not found, 상품이 있어야 됩니다.");
+        Optional<Product> foundProduct = productRepository.findById(pno);
+        assertTrue(foundProduct.isPresent(), "Product should be present");
 
-        System.out.println("===============================");
-        Product product = foundproduct.get(); // 전부
-        SortedSet<ProductImage> productImages = product.getImages(); // 1. 객체에서 필요한 부분만
-        assertNotNull(productImages); // 2. 널이 아닌지 검증 -> pass
-        assertEquals(0, productImages.first().getIno()); // 3. 첫번째 first
-        System.out.println(productImages);
-
+        System.out.println("-----------------------");
+        Product product = foundProduct.get();
+        SortedSet<ProductImage> productImages = product.getImages(); //1. foundProduct 객체에서 ProductImage 객체 Set을 가져와서 productImages에 저장
+        assertNotNull(productImages);       //2. productImages 널이 아닌지 검증
+        assertEquals(0, productImages.first().getIno()); //3. productImages의 첫번째-first()의 ino가 0과 같은지 검증
     }
 
-    // @EntityGraph 쓰는 방법이 있고, 일반 쿼리문으로 Join 연산을 수행도 가능
     @Test
-    public void testRead2(){
+    public void testGetProduct(){
         Long pno = 1L;
-        Optional<Product> foundproduct = productRepository.getProduct(pno);
-        assertTrue(foundproduct.isPresent());
 
-        Product product = foundproduct.get();
-        SortedSet<ProductImage> productImages = product.getImages();
-        assertNotNull(productImages);
-        assertEquals(0, productImages.first().getIno());
-        System.out.println(productImages);
+        Optional<Product> foundProduct = productRepository.getProduct(pno);
+        assertTrue(foundProduct.isPresent(), "Product should be present");
+        log.info(foundProduct);
 
+        System.out.println("-----------------------");
+        Product product = foundProduct.get();
+        SortedSet<ProductImage> productImages = product.getImages(); //1. foundProduct 객체에서 ProductImage 객체 Set을 가져와서 productImages에 저장
+        assertNotNull(productImages);       //2. productImages 널이 아닌지 검증
+        assertEquals(0, productImages.first().getIno()); //3. productImages의 첫번째-first()의 ino가 0과 같은지 검증
 
+        log.info(productImages);
     }
 
     @Test
     @Transactional
     @Commit
-    public void testUpdate() {
+    public void testUpdate(){
         Long pno = 1L;
         String pname = "변경 상품";
         int price = 1000;
         String img1 = "new1.jpg";
         String img2 = "new2.jpg";
 
-        Optional<Product> foundproduct = productRepository.getProduct(pno);
-        assertTrue(foundproduct.isPresent(), "상품이 존재하지 않습니다 ");
+        Optional<Product> foundProduct = productRepository.getProduct(pno); //1. pno에 해당하는 데이터 가져오기
+        assertTrue(foundProduct.isPresent(), "Product should be present");  //2. 1의 데이터가 존재하는지 검증
 
-        Product product = foundproduct.get(); // 찾은 번호에 맞는, 해당 객체 가져오기
-        product.changePname(pname); // 변경 시작
+        Product product = foundProduct.get();   //3. 1의 데이터에서 Product 객체 가져오기
+        product.changePname(pname);             //4. 3의 객체에  pname, price는 변경하고 img1, img2는 추가
         product.changePrice(price);
         product.addImage(img1);
         product.addImage(img2);
 
-        foundproduct = productRepository.getProduct(pno); // 해당하는 데이터 다시 가져오기
-        assertEquals(pname, foundproduct.get().getPname());
-        assertEquals(price, foundproduct.get().getPrice());
+        foundProduct = productRepository.getProduct(pno);   //5. pno에 해당하는 데이터 다시 가져오기
+        assertEquals(pname, foundProduct.get().getPname()); //6. pname과 5의 상품이름이 일치하는지 검증
+        assertEquals(price, foundProduct.get().getPrice()); //7. price와 5의 상품가격이 일치하는지 검증
 
-        SortedSet<ProductImage> productImages = product.getImages(); // 데이터에서 프로덕트 이미지를
-        assertEquals(3, productImages.last().getIno());
+        SortedSet<ProductImage> productImages = product.getImages();    //8. 5의 데이터에서 ProductImage 객체 Set을 가져와서 productImages에 저장
+        assertEquals(3, productImages.last().getIno());   //9. 8의 마지막 데이터의 ino가 3과 같은지 검증
     }
 
     @Test
@@ -144,38 +125,157 @@ public class ProductRepositoryTests {
     public void testDelete() {
         Long pno = 5L;
 
-        assertTrue(productRepository.getProduct(pno).isPresent(), " 없습니다 . ");
+        assertTrue(productRepository.getProduct(pno).isPresent(),
+                "Product should be present");  //1. pno에 해당하는 Product 객체가 존재하는지 검증
 
-        productRepository.deleteById(pno);
+        productRepository.deleteById(pno); //2. pno에 해당하는 Product 객체 삭제
 
-        assertFalse(productRepository.getProduct(pno).isPresent(), "지웠는데 왜 있지?");
+        assertFalse(productRepository.getProduct(pno).isPresent(),
+                "Product should be present");    //3. pno에 해당하는 Product 객체가 존재하지 않는 것을 검증
     }
 
     @Test
-    public void testReadDTO() {
+    public void testGetProductDTO(){     //2. ProductRepository의 getProductDTO 메서드 테스트
+        Long pno = 1L;                   //2.0 수정 테스트에서 사용한 상품번호를 이용하여
 
-        // 반드시 DB에 있는 번호로
-        Long pno = 1L;
+        Optional<ProductDTO> foundProductDTO = productRepository.getProductDTO(pno);
+        assertTrue(foundProductDTO.isPresent(),      //2.1 반환결과가 존재하는지 검증
+                "ProductDTO should be present");
 
-        Optional<ProductDTO> result = productRepository.getProductDTO(pno);
-        assertTrue(result.isPresent(), " 문제가 발생 1 ");
-
-        List<String> images = result.get().getImages();
-        assertNotNull(images);
-        assertEquals("new2.jpg", images.get(3));
-        log.info(result);
-// 2024-08-30T16:36:02.680+09:00  INFO 2160 --- [restz] [    Test worker]
-// e.e.r.repository.ProductRepositoryTests  :
-// Optional[ProductDTO(pno=1, pname=변경 상품, price=1000,
-// description=null, registerId=null, images=[1_image1.jpg, 1_image2.jpg, new1.jpg, new2.jpg])]
-
-
-        // 2024-08-30T16:40:37.898+09:00  INFO 2199 --- [restz] [    Test worker] e.e.r.repository.
-        // ProductRepositoryTests  : Optional[ProductDTO(pno=1, pname=변경 상품, price=1000,
-        // description=상품 설명, registerId=user1, images=[1_image1.jpg, 1_image2.jpg, new1.jpg, new2.jpg])]
-
-
-//        ProductDTO productDTO = result.get();
-//        System.out.println(productDTO);
+        List<String> images = foundProductDTO.get().getImages();
+        assertNotNull(images);                      //2.2 이미지 목록이 널이 아닌지 검증
+        assertEquals("new2.jpg", images.get(3));    //2.3 이미지 목록의 3번째 인덱스의 파일명이 new2.jpg와 같은지 검증
+        log.info(foundProductDTO);
     }
+
+
+    /*
+    Optional[Product(pno=1, pname=변경 상품, price=1000,
+                    description=상품 설명, registerId=user5,
+                    regDate=2024-08-30T11:09:26.203212,
+                    modDate=2024-08-30T14:18:03.452406)]
+-----------------------
+                    [ProductImage(ino=0, filename=1_image1.jpg),
+                     ProductImage(ino=1, filename=1_image2.jpg),
+                     ProductImage(ino=2, filename=new1.jpg),
+                     ProductImage(ino=3, filename=new2.jpg),
+                     ProductImage(ino=4, filename=new1.jpg),
+                     ProductImage(ino=5, filename=new2.jpg)]    */
+
+//    Optional[ProductDTO(pno=1, pname=변경 상품, price=1000,
+    //                    description=상품 설명, registerId=user5,
+    //                    images=[1_image1.jpg, 1_image2.jpg, new1.jpg,
+    //                            new2.jpg, new1.jpg, new2.jpg])]
+
+//  ProductListDTO   pno, pname,   price, registerId, pimage
+//                     1  변경 상품  1000   user5      1_image1.jpg
+//                     2  신규 상품  5000   user5      1_image1.jpg
+//                     3  신규 상품  5000   user5      1_image1.jpg
+
+    @Test   //페이징 테스트
+    public void testList(){
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+
+        Page<ProductListDTO> productList = productRepository.list(pageable);
+        assertNotNull( productList );
+        assertEquals(49, productList.getTotalElements()); //전체 게시물 수
+        assertEquals(5, productList.getTotalPages());     //총 페이지 수
+        assertEquals(0,  productList.getNumber()) ;        //현재 페이지 번호 0
+        assertEquals(10, productList.getSize());           //한 페이지 게시물 수 10
+        assertEquals(10, productList.getContent().size()); //      "
+
+        productList.getContent().forEach(System.out::println);
+    }
+
+    @Test   //페이징 테스트
+    @Transactional
+    public void testListWithAllImages(){
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+
+        Page<ProductDTO> productList = productRepository.listWithAllImages(pageable);
+        assertNotNull( productList );
+        assertEquals(49, productList.getTotalElements()); //전체 게시물 수
+        assertEquals(5, productList.getTotalPages());     //총 페이지 수
+        assertEquals(0,  productList.getNumber()) ;        //현재 페이지 번호 0
+        assertEquals(10, productList.getSize());           //한 페이지 게시물 수 10
+        assertEquals(10, productList.getContent().size()); //      "
+
+        productList.getContent().forEach(System.out::println);
+    }
+
+    @Test   //페이징 테스트
+    public void testListWithAllImagesFetch(){
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").descending());
+
+//        Page<ProductDTO> productList = productRepository.listWithAllImagesFetch(pageable);
+        Page<ProductDTO> productList = productRepository.getProductDTOFetch(pageable);
+        assertNotNull( productList );
+        assertEquals(102, productList.getTotalElements()); //전체 상품이미지 수
+        assertEquals(11, productList.getTotalPages());     //총 페이지 수
+        assertEquals(0,  productList.getNumber()) ;        //현재 페이지 번호 0
+        assertEquals(10, productList.getSize());           //한 페이지 게시물 수 10
+        assertEquals(10, productList.getContent().size()); //      "
+
+        productList.getContent().forEach(System.out::println);
+    }
+
+
+
+//    @Test   // @Query 테스트
+//    public void testListAll(){
+//        Pageable pageable = PageRequest.of(9,   //페이지 번호 - 첫번째 페이지 0부터 시작
+//                                           10);  //한 페이지 게시물 수
+//
+//        Page<Todo> todoPage = todoRepository.listAll(pageable);
+//        assertNotNull( todoPage );
+//        assertEquals(100, todoPage.getTotalElements()); //전체 게시물 수 100개
+//        assertEquals(10, todoPage.getTotalPages());     //총 페이지 수 10개
+//        assertEquals(9,  todoPage.getNumber()) ;        //현재 페이지 번호 9
+//        assertEquals(10, todoPage.getSize());           //한 페이지 게시물 수 10
+//        assertEquals(10, todoPage.getContent().size()); //      "
+//
+//        todoPage.getContent().forEach(System.out::println);
+//    }
+//
+//    @Test   // Querydsl 테스트
+//    public void testSearch(){
+//        Pageable pageable = PageRequest.of(9, 10, Sort.by("mno").descending());
+//
+//        Page<Todo> todoPage = todoRepository.search(pageable);
+//        assertNotNull( todoPage );
+//        assertEquals(100, todoPage.getTotalElements()); //전체 게시물 수 100개
+//        assertEquals(10, todoPage.getTotalPages());     //총 페이지 수 10개
+//        assertEquals(9,  todoPage.getNumber()) ;        //현재 페이지 번호 9
+//        assertEquals(10, todoPage.getSize());           //한 페이지 게시물 수 10
+//        assertEquals(10, todoPage.getContent().size()); //      "
+//
+//        todoPage.getContent().forEach(System.out::println);
+//    }
+//
+//    @Test
+//    public void testGetTodoDTO(){
+//        Long mno = 2L;
+//        Optional<TodoDTO> foundTodoDTO
+//                = todoRepository.getTodoDTO(mno);
+//
+//        assertNotNull(foundTodoDTO);
+//        assertEquals("CHANGER", foundTodoDTO.get().getWriter());
+//
+//        foundTodoDTO.ifPresent(System.out::println);
+//    }
+//
+//    @Test   // DTO Projections 테스트
+//    public void testSearchDTO(){
+//        Pageable pageable = PageRequest.of(9, 10, Sort.by("mno").descending());
+//
+//        Page<TodoDTO> todoPage = todoRepository.searchDTO(pageable);
+//        assertNotNull( todoPage );
+//        assertEquals(100, todoPage.getTotalElements()); //전체 게시물 수 100개
+//        assertEquals(10, todoPage.getTotalPages());     //총 페이지 수 10개
+//        assertEquals(9,  todoPage.getNumber()) ;        //현재 페이지 번호 9
+//        assertEquals(10, todoPage.getSize());           //한 페이지 게시물 수 10
+//        assertEquals(10, todoPage.getContent().size()); //      "
+//
+//        todoPage.getContent().forEach(System.out::println);
+//    }
 }
