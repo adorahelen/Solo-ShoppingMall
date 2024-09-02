@@ -2,12 +2,17 @@ package edu.example.restz.service;
 
 import edu.example.restz.dto.ProductDTO;
 import edu.example.restz.entity.Product;
+import edu.example.restz.entity.Product;
+import edu.example.restz.entity.ProductImage;
 import edu.example.restz.exception.ProductException;
 import edu.example.restz.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Log4j2
@@ -28,8 +33,43 @@ public class ProductService {
         }
     }
 
-    //상품 조회
-    //조회 결과가 없는 경우
-    //예외 메시지를 Product NOT FOUND로 지정하여
-    //ProductTaskException 발생시키기
+    public ProductDTO read(Long pno) {
+        log.info(" === pno Search ===");
+        log.info("--- " + pno);
+
+        Optional<ProductDTO> productDTO = productRepository.getProductDTO(pno);
+        return productDTO.orElseThrow(ProductException.NOT_REGISTERED::get);
+
+    }
+
+
+    public ProductDTO update(ProductDTO productDTO) {
+        log.info(" === pno Modify ===");
+        log.info("--- " + productDTO);
+        Optional<Product> result = productRepository.findById(productDTO.getPno());
+
+        Product product = result.orElseThrow(ProductException.NOT_REGISTERED::get);
+        try {
+            product.changePname(productDTO.getPname());
+            product.changePrice(productDTO.getPrice());
+            product.changeDescription(productDTO.getDescription());
+
+            product.clearImages();
+
+            // new images add
+            List<String> images = productDTO.getImages();
+
+            if(images != null && !images.isEmpty()) {
+                images.forEach(product::addImage);
+            }
+            productRepository.save(product);
+            return new ProductDTO(product);
+
+        }catch(Exception e) {
+            log.error("--- " + e.getMessage());
+            throw ProductException.NOT_MODIFIED.get();
+        } // end catch
+
+    }
+
 }
