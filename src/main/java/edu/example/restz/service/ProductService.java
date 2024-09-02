@@ -1,6 +1,8 @@
 package edu.example.restz.service;
 
+import edu.example.restz.dto.PageRequestDTO;
 import edu.example.restz.dto.ProductDTO;
+import edu.example.restz.dto.ProductListDTO;
 import edu.example.restz.entity.Product;
 import edu.example.restz.entity.Product;
 import edu.example.restz.entity.ProductImage;
@@ -8,6 +10,9 @@ import edu.example.restz.exception.ProductException;
 import edu.example.restz.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,5 +91,22 @@ public class ProductService {
         }
 
     }
+
+    public Page<ProductListDTO> getList(PageRequestDTO pageRequestDTO) {
+        log.info(" === pno Page List Search ===");
+        log.info("--- " + pageRequestDTO);
+
+        try {
+            Pageable pageable =
+                    pageRequestDTO.getPageable(Sort.by("pno").descending());
+
+            return  productRepository.list(pageable);
+        }catch (Exception e) {
+            log.error("--- " + e.getMessage());
+            throw ProductException.NOT_FETCHED.get();
+
+        } // end
+    }// 상품의 목록은 나중에 검색 조건을 추가하는 부분을 고려해야 한다.
+
 
 }
