@@ -2,6 +2,7 @@ package edu.example.restz.controller.advice;
 
 import edu.example.restz.exception.EntityNotFoundException;
 import edu.example.restz.exception.ProductTaskException;
+import edu.example.restz.exception.ReviewTaskException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,18 @@ import java.util.Map;
 @RestControllerAdvice
 @Log4j2
 public class APIControllerAdvice {
+
+    @ExceptionHandler(ReviewTaskException.class)
+    public ResponseEntity<?> handleReviewTaskException(ReviewTaskException e) {
+        log.info("Review task exception", e);
+        log.info(e.getClass().getName());
+        log.error(e.getMessage());
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", e.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+
     @ExceptionHandler(ProductTaskException.class)
     public ResponseEntity<Map<String, String>> handleException(ProductTaskException e){
         log.info("--- ProductTaskException");
