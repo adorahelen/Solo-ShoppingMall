@@ -139,5 +139,6 @@
 
 ## ManyToOne 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/acacfe71-7dfe-4712-8f6c-83782a5896cf">
+
 - tbl_product_image는 키 없이 종속, tbl_review를 키로 매핑 
 
