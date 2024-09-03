@@ -7,6 +7,7 @@ import edu.example.restz.dto.ProductListDTO;
 import edu.example.restz.entity.Product;
 import edu.example.restz.entity.QProduct;
 import edu.example.restz.entity.QProductImage;
+import edu.example.restz.entity.QReview;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -80,6 +81,38 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 .toList();
 
         return new PageImpl<>(dtoList, pageable, count);
+    }
+
+    // 3중 조인
+    @Override
+    public Page<ProductListDTO> listWithReviewCount(Pageable pageable) {
+        QProduct product = QProduct.product;
+        QReview review =QReview.review;;
+        QProductImage productImage = QProductImage.productImage;
+
+        JPQLQuery<Product> query
+                = from(product).leftJoin(review)
+                .on(review.product.eq(product))
+                .leftJoin(product.images, productImage)
+                .where(productImage.ino.eq(0) )
+                .groupBy(product, productImage.filename);
+
+
+        JPQLQuery<ProductListDTO> dtoQuery
+                = query.select(Projections.bean(
+                ProductListDTO.class,
+                product.pno,
+                product.pname,
+                product.price,
+                product.registerId,
+                productImage.filename.as("pimage"),
+                review.countDistinct().as("reviewCount")));
+
+        getQuerydsl().applyPagination(pageable, dtoQuery);      //페이징
+        List<ProductListDTO> productList = dtoQuery.fetch();    //쿼리 실행
+        long count = dtoQuery.fetchCount();         //레코드 수 조회
+
+        return new PageImpl<>(productList, pageable, count);
     }
 }
 

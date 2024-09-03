@@ -1,5 +1,6 @@
 package edu.example.restz.repository;
 
+import edu.example.restz.dto.ProductListDTO;
 import edu.example.restz.dto.ReviewDTO;
 import edu.example.restz.entity.Product;
 import edu.example.restz.entity.Review;
@@ -29,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ReviewRepositoryTest {
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Test
     public void testInsert(){
@@ -145,10 +148,18 @@ public class ReviewRepositoryTest {
 //        });
         // 결과가 널이 아님을 검증
 
-//        assertEquals(10, pageable.get);
+//        assertEquals(10, pageable.get)
+    }
 
+    @Test // 페이징테스트2, 리뷰 개수 추가
+    public void testListWithReviewCount(){
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("pno").ascending());
 
-
+        Page<ProductListDTO> productListDTOS = productRepository.listWithReviewCount(pageable);
+        assertNotNull(productListDTOS);
+        productListDTOS.getContent().forEach(productListDTO -> {
+            System.out.println(productListDTO);
+        });
     }
 }
 
