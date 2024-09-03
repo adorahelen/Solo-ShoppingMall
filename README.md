@@ -140,5 +140,8 @@
 ## ManyToOne 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/acacfe71-7dfe-4712-8f6c-83782a5896cf">
 
-- tbl_product_image는 키 없이 종속, tbl_review를 키로 매핑 
+- tbl_product_image는 키 없이 종속, tbl_review를 키로 매핑, 아래와 같이 자동 생성 
+
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/3e8341c7-cb8f-4367-a7b9-ddf0086d7c6a">
+
 
