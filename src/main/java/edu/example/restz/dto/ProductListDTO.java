@@ -13,4 +13,6 @@ public class ProductListDTO {
     private String registerId;
     private String pimage;
 
+    private Long reviewCount;
+
 }

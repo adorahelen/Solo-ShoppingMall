@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class ProductDTO {
     private Long pno;
+    private Long reviewCount;
+
 
     @NotEmpty
     private String pname;
