@@ -1,5 +1,6 @@
 package edu.example.restz.repository;
 
+import edu.example.restz.dto.ReviewDTO;
 import edu.example.restz.entity.Product;
 import edu.example.restz.entity.Review;
 import lombok.extern.log4j.Log4j2;
@@ -7,6 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,6 +122,33 @@ public class ReviewRepositoryTest {
         assertTrue(reviewRepository.existsById(rno), "Review not found");
         reviewRepository.deleteById(rno);
         assertFalse(reviewRepository.existsById(rno), "Review not found");
+    }
+
+    @Test
+    public void testList(){
+        Long pno = 1L;
+
+        // 한 페이지에 5개씩 , 첫번째 페이지를 오름차순 정렬로 가져오기
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("rno").descending());
+
+
+        Page<ReviewDTO> reviewDTOS = reviewRepository.List(pno, pageable);
+
+        assertNotNull(reviewDTOS);
+        assertEquals(9, reviewDTOS.getTotalElements());
+        assertEquals(2, reviewDTOS.getTotalPages());
+        assertEquals(0, reviewDTOS.getNumber()); // 현재 페이지 번호 0
+        assertEquals(5, reviewDTOS.getSize());
+        assertEquals(5, reviewDTOS.getContent().size());
+//        reviewRepository.List(pno, pageable).getContent().forEach(reviewDTO ->{
+//            System.out.println(reviewDTO);
+//        });
+        // 결과가 널이 아님을 검증
+
+//        assertEquals(10, pageable.get);
+
+
+
     }
 }
 

@@ -1,6 +1,9 @@
 package edu.example.restz.repository;
 
+import edu.example.restz.dto.ReviewDTO;
 import edu.example.restz.entity.Review;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +21,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "join fetch rp.images where r.rno = :rno")
     Optional<Review> getWithProductImage(@Param("rno") Long rno);
     // 이미지랑 같이 가져오도록 두번 조인
+
+    @Query("SELECT  r from Review r WHERE r.product.pno = :pno ")
+    Page<ReviewDTO> List(@Param("pno") Long pno, Pageable pageable);
 }
