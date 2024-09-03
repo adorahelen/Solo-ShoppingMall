@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,6 +45,78 @@ public class ReviewRepositoryTest {
             assertNotNull(savedReview);
             assertEquals(i, savedReview.getRno());
         });
+    }
+
+    @Test
+    @Transactional(readOnly = true)// 읽기 전용 트랜잭션 모드 설정
+    public void testRead() {
+        Long rno = 5L;
+
+        Optional<Review> foundReview = reviewRepository.findById(rno);
+        assertTrue(foundReview.isPresent(), "Review not found");
+
+        System.out.println("=========");
+        Product product = foundReview.get().getProduct();
+        assertNotNull(product);
+        assertEquals(1, product.getPno());
+        assertEquals(1000, product.getPrice());
+    } // => 셀렉트를 두 번 해서, 값을 찾음
+
+    @Test
+    public void testGetReviewProd(){
+        Long rno = 5L;
+        Optional<Review> foundReview = reviewRepository.getReviewProduct(rno);
+        assertTrue(foundReview.isPresent(), "Review not found");
+        Product product = foundReview.get().getProduct();
+        assertNotNull(product);
+        assertEquals(1, product.getPno());
+        assertEquals(1000, product.getPrice());
+    } // => 조인을 적용하여, 한번에 셀렉트로 값을 찾아옴
+
+    @Test
+    public void testGetReviewProdImg() {
+        //리뷰 조회 시 상품과 상품 이미지도 가져오기 테스트
+        Long rno = 5L;
+
+        Optional<Review> foundReview
+                = reviewRepository.getWithProductImage(rno);
+        assertTrue(foundReview.isPresent(), "foundReview should be present");
+
+        System.out.println("-----------------------");
+        Product product = foundReview.get().getProduct();
+        assertNotNull(product);
+        assertEquals(1, product.getPno());
+        assertEquals(1000, product.getPrice());
+        assertEquals(0, product.getImages().first().getIno());
+    }
+
+
+    @Test
+    @Transactional
+    @Commit
+    public void testUpdate(){
+        Long rno = 5L;
+        String content = "리뷰 수정 테스트";
+        int star = 1;
+
+        Optional<Review> foundReview = reviewRepository.findById(rno);
+        assertTrue(foundReview.isPresent(), "Review not found");
+
+        Review review = foundReview.get();
+        review.ChangeContent(content);
+        review.ChangeStar(star);
+
+        foundReview = reviewRepository.findById(rno);
+       assertEquals(content, foundReview.get().getContent());
+       assertEquals(star, foundReview.get().getStar());
+    }
+
+    @Test
+    public void testDelete(){
+        Long rno = 4L;
+        assertTrue(reviewRepository.existsById(rno), "Review not found");
+        reviewRepository.deleteById(rno);
+        assertFalse(reviewRepository.existsById(rno), "Review not found");
     }
 }
 
