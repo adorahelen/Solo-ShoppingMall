@@ -3,6 +3,7 @@ package edu.example.restz.repository;
 import edu.example.restz.entity.Cart;
 import edu.example.restz.entity.CartItem;
 import edu.example.restz.entity.Product;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+@Log4j2
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
@@ -32,7 +34,7 @@ public class CartRepositoryTest {
     @Test
     public void testInsert(){
         String mid = "user9";
-        Long pno = 50L;
+        Long pno = 46L;
         int qty = 5;
 
         // 장바구니 조회 또는 생성
@@ -55,7 +57,7 @@ public class CartRepositoryTest {
     }
 
     @Test
-    public void testRead(){
+    public void testRead(){ // test read 2 는, 이미지 전부가 아니라 상품 이미지 하나만 출력하도록 함
         String mid = "user9";
         Optional<List<CartItem>> result = cartItemRepository.getCartItemsOfCustomer(mid);
 
@@ -67,5 +69,25 @@ public class CartRepositoryTest {
             System.out.println(cartItem.getProduct().getImages());
             System.out.println("=================================");
         }); // 추가적인 쿼리 없이 조인을 통해 상품의 이미지까지 가져온다.
+    }
+
+    @Test
+    @Transactional
+    @Commit
+    public void testModifyAndDelete(){
+        Long itemNo = 3L;
+        int qty = 0;
+
+        Optional<CartItem> result = cartItemRepository.findById(itemNo);
+        log.info("###############");
+        log.info(result);
+
+        CartItem cartItem = result.get();
+        cartItem.changeQuantity(qty);
+
+        if (cartItem.getQuantity() <= 0){
+            cartItemRepository.delete(cartItem);
+        } // 수정과 삭제는 동시에 :
+        // ? : 조정 가능한 속성값은 수량 밖에 없으며, 수량이 0보다 작거나 같으면 해당 장바구니 아이템은 삭제이다.
     }
 }
