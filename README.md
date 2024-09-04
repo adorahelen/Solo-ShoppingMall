@@ -1,3 +1,5 @@
+# UI 구현하면 -> 쇼핑몰 완성 ***
+
 # 프로젝트 구성 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/1f1d631e-959d-4fa8-8213-7bbfbd6d08dc">
 
