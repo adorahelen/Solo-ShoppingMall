@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -51,5 +52,20 @@ public class CartRepositoryTest {
                 .build();
 
         cartItemRepository.save(cartItem);
+    }
+
+    @Test
+    public void testRead(){
+        String mid = "user9";
+        Optional<List<CartItem>> result = cartItemRepository.getCartItemsOfCustomer(mid);
+
+        List<CartItem> cartItemList = result.orElse(null);
+
+        cartItemList.forEach(cartItem -> {
+            System.out.println(cartItem);
+            System.out.println(cartItem.getProduct());
+            System.out.println(cartItem.getProduct().getImages());
+            System.out.println("=================================");
+        }); // 추가적인 쿼리 없이 조인을 통해 상품의 이미지까지 가져온다.
     }
 }
