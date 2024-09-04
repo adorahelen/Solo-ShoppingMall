@@ -1,5 +1,6 @@
 package edu.example.restz.controller.advice;
 
+import edu.example.restz.exception.CartTaskException;
 import edu.example.restz.exception.EntityNotFoundException;
 import edu.example.restz.exception.ProductTaskException;
 import edu.example.restz.exception.ReviewTaskException;
@@ -19,6 +20,15 @@ import java.util.Map;
 @RestControllerAdvice
 @Log4j2
 public class APIControllerAdvice {
+
+        @ExceptionHandler(CartTaskException.class)
+        public ResponseEntity<Map<String, String>> handleException(CartTaskException e){
+            log.info("--- CartTaskException");
+            log.info("--- e.getMessage() : " + e.getMessage());
+
+            Map<String, String> errMap = Map.of("error", e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(errMap);
+        }
 
     @ExceptionHandler(ReviewTaskException.class)
     public ResponseEntity<?> handleReviewTaskException(ReviewTaskException e) {
