@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Cart {
+public class Cart { // 장바구니
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cno;
+    private Long cno; // 카트 넘버
 
-    private String customer;
+    private String customer; // 장바구니 소유주
 
     @CreatedDate
     private LocalDateTime regDate;
