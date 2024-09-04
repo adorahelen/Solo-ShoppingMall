@@ -140,8 +140,21 @@
 ## ManyToOne 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/acacfe71-7dfe-4712-8f6c-83782a5896cf">
 
-- tbl_product_image는 키 없이 종속, tbl_review를 키로 매핑, 아래와 같이 자동 생성 
-
+- tbl_product_image는 키 없이 종속, tbl_review를 키로 매핑, 아래와 같이 자동 생성
+  
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/3e8341c7-cb8f-4367-a7b9-ddf0086d7c6a">
+
+
+## ManyToMany
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/6d002ea3-f1fb-4eca-be02-9a12030889e3">
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/f9ff6565-9467-4a98-a6d8-5d283a0ad5f2">
+
+- 현재 작성된 엔티티들은 Cart와 CartItem, Product 간의 관계를 설정
+- Cart와 Product 간의 다대다 관계를 CartItem이라는 중간 엔티티를 통해 1대다 및 다대1 관계로 풀어낸 것
+
+
+
+
+
 
 
