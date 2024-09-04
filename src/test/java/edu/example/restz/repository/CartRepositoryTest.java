@@ -33,7 +33,7 @@ public class CartRepositoryTest {
     @Commit
     @Test
     public void testInsert(){
-        String mid = "user9";
+        String mid = "user99";
         Long pno = 46L;
         int qty = 5;
 

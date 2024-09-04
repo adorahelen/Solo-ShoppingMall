@@ -19,4 +19,10 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
             " order by c.itemNo desc ")
     Optional<List<CartItem>> getCartItemsOfCustomer(@Param("customer") String customer);
 // 중복 셀렉트 하지 않고, 한꺼번에 조회하기 위한 쿼리문
+
+    @Query("select  c.cart.customer " +
+    " from CartItem  c " +
+    " where c.itemNo = :itemNo" )
+    Optional<String> getCustomerOfItem(@Param("itemNo") Long itemNo);
+    // 장바구니 소유주를 확인하는 쿼리 (비교)
 }

@@ -27,7 +27,10 @@ public class CartTaskException  extends RuntimeException{
 
         CART_ITEM_REGISTER_FAIL("Cart Register Fail", 500),
         CART_ITEM_UPDATE_FAIL("Cart Update Fail", 500),
-        CART_ITE_DELETE_FAIL("Cart Delete Fail", 500);
+        CART_ITE_DELETE_FAIL("Cart Delete Fail", 500),
+
+        // 장바구니 아이템에 대한 변경이, 소유주와 불 일치 할 경우 발생시키는 에러
+        NOT_CARTITEM_OWNER("Not CartItem Owner", 403);
 
         private String message;
         private int status;
