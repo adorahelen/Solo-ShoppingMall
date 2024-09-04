@@ -1,17 +1,19 @@
 package edu.example.restz.service;
 
-import edu.example.restz.dto.ReviewDTO;
+import edu.example.restz.dto.*;
+import edu.example.restz.entity.Product;
 import edu.example.restz.entity.Review;
+import edu.example.restz.exception.ProductException;
 import edu.example.restz.exception.ReviewException;
-import edu.example.restz.exception.ReviewTaskException;
 import edu.example.restz.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +29,9 @@ public class ReviewService {
             Review review = reviewDTO.toEntity();
             reviewRepository.save(review);
             return new ReviewDTO(review);
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw ReviewException.PRODUCT_NOT_FOUND.get();
-        }catch ( Exception e ) {
+        } catch (Exception e) {
             log.error(e);
             log.error(e.getMessage());
             throw ReviewException.NOT_REGISTERED.get();
@@ -38,7 +40,7 @@ public class ReviewService {
 
     public ReviewDTO read(Long rno) {
         Review review = reviewRepository.findById(rno).orElseThrow(ReviewException.NOT_FOUND::get);
-        return  new ReviewDTO(review);
+        return new ReviewDTO(review);
         // 반환을 해서 모델로(뷰) 보내기 위해 다시 디티오에 담아서 반환
         // 값을 엔티티에서 가져올때는 엔티티로 받는다.
         // 따라서 중간에 엔티티가 사용되었지만, public ReviewDTO 라고 선언한 것이다.
@@ -53,7 +55,7 @@ public class ReviewService {
             review.ChangeStar(reviewDTO.getStar());
             reviewRepository.save(review);
             return new ReviewDTO(review);
-        }catch (Exception e) {
+        } catch (Exception e) {
 
             log.error(e);
             log.error(e.getMessage());
@@ -62,6 +64,30 @@ public class ReviewService {
         }
     }
 
+    public void remove(Long rno) {
+        Review review = reviewRepository.findById(rno).orElseThrow(ReviewException.NOT_FOUND::get);
+        try {
+            reviewRepository.delete(review);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw ReviewException.NOT_REMOVED.get();
+        }
+    }
+
+//    public List<ReviewDTO> readAll(PageRequestDTO pageRequestDTO) {
+//        Long pno = pageRequestDTO.get
+//    }
+
+    public Page<ReviewDTO> getList(ReviewPageRequestDTO pageRequestDTO) {
+        try {
+            Sort sort = Sort.by("rno").ascending();
+            Pageable pageable = pageRequestDTO.getPageable(sort);
+            return reviewRepository.List(pageRequestDTO.getPno(), pageable);
+        } catch (Exception e) {
+            log.error("--- " + e.getMessage());
+            throw ReviewException.NOT_FETCHED.get();
+        }
 
 
+    }
 }
