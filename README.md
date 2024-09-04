@@ -154,7 +154,7 @@
 - 현재 작성된 엔티티들은 Cart와 CartItem, Product 간의 관계를 설정
 - Cart와 Product 간의 다대다 관계를 CartItem이라는 중간 엔티티를 통해 1대다 및 다대1 관계로 풀어낸 것
 
-
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/b567b622-f4d8-4b16-b01f-b9500133e7d1">
 
 
 
